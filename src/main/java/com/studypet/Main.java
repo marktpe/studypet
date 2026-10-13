@@ -2,12 +2,17 @@ package com.studypet;
 
 public class Main {
     public static void main(String[] args) {
-        Task task1 = new Task("1", "Finish Calc Homework", 50);
+        Pet myPet = new Pet("Byte");
+        Task task1 = new Task("1", "Finish Homework", 120);
 
-        System.out.println("Task: " + task1.getTitle());
-        System.out.println("Is complete? " + task1.isCompleted());
+        System.out.println(myPet.getName() + " starts at Level " + myPet.getLevel() + " with " + myPet.getCurrentXp() + " XP.");
 
+        // Complete task and reward pet
         task1.markComplete();
-        System.out.println("After marking complete: " + task1.isCompleted());
+        if (task1.isCompleted()) {
+            myPet.addXp(task1.getXpReward());
+        }
+
+        System.out.println(myPet.getName() + " now has " + myPet.getCurrentXp() + " XP (Level " + myPet.getLevel() + ").");
     }
 }
