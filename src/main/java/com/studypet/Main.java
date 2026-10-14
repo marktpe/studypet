@@ -3,16 +3,16 @@ package com.studypet;
 public class Main {
     public static void main(String[] args) {
         Pet myPet = new Pet("Byte");
-        Task task1 = new Task("1", "Finish Homework", 120);
+        TaskManager manager = new TaskManager(myPet);
 
-        System.out.println(myPet.getName() + " starts at Level " + myPet.getLevel() + " with " + myPet.getCurrentXp() + " XP.");
+        // Add multiple tasks
+        manager.addTask(new Task("1", "Finish Calc Homework", 50));
+        manager.addTask(new Task("2", "Read CSE Chapter 3", 60));
 
-        // Complete task and reward pet
-        task1.markComplete();
-        if (task1.isCompleted()) {
-            myPet.addXp(task1.getXpReward());
-        }
+        // Complete one task
+        manager.completeTask("1");
 
-        System.out.println(myPet.getName() + " now has " + myPet.getCurrentXp() + " XP (Level " + myPet.getLevel() + ").");
+        // Complete second task (should trigger level up!)
+        manager.completeTask("2");
     }
 }
