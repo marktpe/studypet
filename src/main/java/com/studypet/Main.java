@@ -11,16 +11,14 @@ public class Main {
         Pet myPet = new Pet("Byte");
         TaskManager manager = new TaskManager(myPet);
 
-        // Pre-load a task to test with
-        manager.addTask(new Task("1", "Read CSE Chapter 4", 40));
-
         System.out.println("--- Welcome to StudyPet! ---");
 
-        // Sentinel-controlled indefinite loop
         boolean running = true;
+        int nextTaskId = 1;
+
         while (running) {
             System.out.println("\n-------------------------------------------");
-            System.out.print("Enter '1' (View Pet), '2' (Complete Task 1), or 'q' (Quit): ");
+            System.out.print("Enter '1' (View Pet), '2' (Add Task), '3' (Complete Task), or 'q' (Quit): ");
             String choice = console.nextLine();
 
             if (choice.equals("1")) {
@@ -35,8 +33,29 @@ public class Main {
                 System.out.println("] " + myPet.getCurrentXp() + "/" + myPet.getXpToNextLevel() + " XP");
 
             } else if (choice.equals("2")) {
-                manager.completeTask("1");
+                // Dynamically read task details from console
+                System.out.print("Enter task title: ");
+                String title = console.nextLine();
 
+                System.out.print("Enter XP reward (e.g. 30): ");
+                int xpReward = console.nextInt();
+                console.nextLine(); // Clear newline buffer from scanner
+
+                // Instantiate new Task and pass it to TaskManager
+                String idStr = "" + nextTaskId;
+                Task newTask = new Task(idStr, title, xpReward);
+                manager.addTask(newTask);
+
+                System.out.println("✅ Added Task #" + idStr + ": " + title + " (" + xpReward + " XP)");
+                nextTaskId++;
+
+            } else if (choice.equals("3")) {
+                System.out.print("Enter Task ID to complete: ");
+                String targetId = console.nextLine();
+
+                manager.completeTask(targetId);
+
+                // Roll for random bonus XP
                 int bonusXp = rand.nextInt(21);
                 if (bonusXp > 10) {
                     System.out.println("🎲 Critical hit! You found " + bonusXp + " bonus XP!");
@@ -44,8 +63,8 @@ public class Main {
                 }
 
             } else if (choice.equalsIgnoreCase("q")) {
-                System.out.println("Goodbye! Thanks for playing StudyPet.");
-                running = false; // Breaks out of the loop
+                System.out.println("Goodbye! Keep up the studying!");
+                running = false;
             } else {
                 System.out.println("Invalid choice! Try again.");
             }
