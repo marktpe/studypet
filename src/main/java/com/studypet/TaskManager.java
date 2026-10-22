@@ -8,32 +8,36 @@ public class TaskManager {
     private Pet pet;
 
     public TaskManager(Pet pet) {
-        this.tasks = new ArrayList<>();
         this.pet = pet;
+        this.tasks = new ArrayList<>();
     }
 
-    // Add a new task to the list
     public void addTask(Task task) {
         tasks.add(task);
-        System.out.println("Added task: " + task.getTitle());
     }
 
-    // Complete a task by its ID and automatically award XP to the pet
-    public boolean completeTask(String id) {
-        for (Task task : tasks) {
-            if (task.getId().equals(id) && !task.isCompleted()) {
-                task.markComplete();
-                pet.addXp(task.getXpReward());
-                System.out.println("Completed: " + task.getTitle() + " (+" + task.getXpReward() + " XP)");
-                return true;
+    // ADD THIS METHOD: Returns all tasks that are not completed yet
+    public List<Task> getPendingTasks() {
+        List<Task> pending = new ArrayList<>();
+        for (int i = 0; i < tasks.size(); i++) {
+            Task t = tasks.get(i);
+            if (!t.isCompleted()) {
+                pending.add(t);
             }
         }
-        System.out.println("Task with ID " + id + " not found or already completed.");
-        return false;
+        return pending;
     }
 
-    // Get all tasks
-    public List<Task> getTasks() {
-        return tasks;
+    public void completeTask(String id) {
+        for (int i = 0; i < tasks.size(); i++) {
+            Task t = tasks.get(i);
+            if (t.getId().equals(id) && !t.isCompleted()) {
+                t.setCompleted(true);
+                pet.addXp(t.getXpReward());
+                System.out.println("🎉 Completed task: " + t.getTitle() + "! Earned " + t.getXpReward() + " XP.");
+                return;
+            }
+        }
+        System.out.println("❌ Task ID not found or already completed!");
     }
 }

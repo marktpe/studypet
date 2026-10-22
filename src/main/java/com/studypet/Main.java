@@ -1,5 +1,6 @@
 package com.studypet;
 
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -18,7 +19,7 @@ public class Main {
 
         while (running) {
             System.out.println("\n-------------------------------------------");
-            System.out.print("Enter '1' (View Pet), '2' (Add Task), '3' (Complete Task), or 'q' (Quit): ");
+            System.out.print("Enter '1' (View Pet), '2' (Add Task), '3' (List Tasks), '4' (Complete Task), or 'q' (Quit): ");
             String choice = console.nextLine();
 
             if (choice.equals("1")) {
@@ -33,15 +34,13 @@ public class Main {
                 System.out.println("] " + myPet.getCurrentXp() + "/" + myPet.getXpToNextLevel() + " XP");
 
             } else if (choice.equals("2")) {
-                // Dynamically read task details from console
                 System.out.print("Enter task title: ");
                 String title = console.nextLine();
 
                 System.out.print("Enter XP reward (e.g. 30): ");
                 int xpReward = console.nextInt();
-                console.nextLine(); // Clear newline buffer from scanner
+                console.nextLine(); // Clear leftover newline buffer
 
-                // Instantiate new Task and pass it to TaskManager
                 String idStr = "" + nextTaskId;
                 Task newTask = new Task(idStr, title, xpReward);
                 manager.addTask(newTask);
@@ -50,12 +49,25 @@ public class Main {
                 nextTaskId++;
 
             } else if (choice.equals("3")) {
+                // Fetch task list and display using a definite for loop
+                List<Task> tasks = manager.getPendingTasks();
+
+                if (tasks.isEmpty()) {
+                    System.out.println("\n📋 No pending tasks! Add one first.");
+                } else {
+                    System.out.println("\n📋 Pending Tasks:");
+                    for (int i = 0; i < tasks.size(); i++) {
+                        Task t = tasks.get(i);
+                        System.out.println("  [" + t.getId() + "] " + t.getTitle() + " - " + t.getXpReward() + " XP");
+                    }
+                }
+
+            } else if (choice.equals("4")) {
                 System.out.print("Enter Task ID to complete: ");
                 String targetId = console.nextLine();
 
                 manager.completeTask(targetId);
 
-                // Roll for random bonus XP
                 int bonusXp = rand.nextInt(21);
                 if (bonusXp > 10) {
                     System.out.println("🎲 Critical hit! You found " + bonusXp + " bonus XP!");
