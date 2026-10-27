@@ -19,7 +19,7 @@ public class Main {
 
         while (running) {
             System.out.println("\n-------------------------------------------");
-            System.out.print("Enter '1' (View Pet), '2' (Add Task), '3' (List Tasks), '4' (Complete Task), or 'q' (Quit): ");
+            System.out.print("Enter '1' (View Pet), '2' (Add Task), '3' (List Tasks), '4' (Complete Task), '5' (Remove Task), or 'q' (Quit): ");
             String choice = console.nextLine();
 
             if (choice.equals("1")) {
@@ -49,7 +49,6 @@ public class Main {
                 nextTaskId++;
 
             } else if (choice.equals("3")) {
-                // Fetch task list and display using a definite for loop
                 List<Task> tasks = manager.getPendingTasks();
 
                 if (tasks.isEmpty()) {
@@ -72,6 +71,17 @@ public class Main {
                 if (bonusXp > 10) {
                     System.out.println("🎲 Critical hit! You found " + bonusXp + " bonus XP!");
                     myPet.addXp(bonusXp);
+                }
+
+            } else if (choice.equals("5")) {
+                System.out.print("Enter Task ID to remove: ");
+                String removeId = console.nextLine();
+
+                boolean removed = manager.removeTask(removeId);
+                if (removed) {
+                    System.out.println("🗑️ Task #" + removeId + " was successfully removed!");
+                } else {
+                    System.out.println("❌ Task ID #" + removeId + " not found!");
                 }
 
             } else if (choice.equalsIgnoreCase("q")) {

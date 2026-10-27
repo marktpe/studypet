@@ -16,7 +16,18 @@ public class TaskManager {
         tasks.add(task);
     }
 
-    // ADD THIS METHOD: Returns all tasks that are not completed yet
+    // ADD THIS METHOD: Searches for a task by ID and removes it
+    public boolean removeTask(String id) {
+        for (int i = 0; i < tasks.size(); i++) {
+            Task t = tasks.get(i);
+            if (t.getId().equals(id)) {
+                tasks.remove(i);
+                return true; // Successfully found and removed
+            }
+        }
+        return false; // Task ID was not found
+    }
+
     public List<Task> getPendingTasks() {
         List<Task> pending = new ArrayList<>();
         for (int i = 0; i < tasks.size(); i++) {
